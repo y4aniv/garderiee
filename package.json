@@ -1,0 +1,9 @@
+{
+  "name": "garderiee",
+  "version": "1.0.0",
+  "description": "Générateur de facture pour la garderie de l'École privé Montessori, Le Petit d'Homme.",
+  "main": "index.js",
+  "repository": "https://github.com/y4aniv/garderiee",
+  "author": "Yaniv DOUIEB",
+  "license": "MIT"
+}
