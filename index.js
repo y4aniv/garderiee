@@ -184,7 +184,7 @@ process.stdin.on('keypress', function (ch, key) {
   sendEmails()
 });
 
-function sendEmails(){
+function sendEmails() {
   for (var i = 0; i < ListeEleveTotal.length; i++) {
     sendEmail(i)
   }
@@ -222,19 +222,31 @@ function sendEmail(i) {
       }
     ]
   }
-  transporter.sendMail(MailOptions, function (error, info) {
-    if(!error){
-      console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue+`[OK]`.green)
-    }else{
-      console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue+`[ERREUR]`.red)
-    }
-    if(I == ListeEleveTotal.length-1){
+  if(ListeEleveTotal[i].Total >= config.factures.min){
+    transporter.sendMail(MailOptions, function (error, info) {
+      if (!error) {
+        console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue + `[OK]`.green)
+      } else {
+        console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue + `[ERREUR]`.red)
+      }
+      if (I == ListeEleveTotal.length - 1) {
+        console.log("")
+        console.log("[+] Toutes les factures ont été envoyées par email".green)
+        console.log("")
+        process.exit()
+      } else {
+        I++
+      }
+    })
+  }else{
+    console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue + `[<${config.factures.min}€]`.red)
+    if (I == ListeEleveTotal.length - 1) {
       console.log("")
       console.log("[+] Toutes les factures ont été envoyées par email".green)
       console.log("")
       process.exit()
-    }else{
+    } else {
       I++
     }
-  })
+  }
 }
