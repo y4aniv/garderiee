@@ -5,14 +5,6 @@ var pdf = require("pdf-creator-node")
 var keypress = require('keypress');
 var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'email@example.com',
-    pass: 'ultrasecretpwd'
-  }
-})
-
 keypress(process.stdin);
 
 var args = process.argv.slice(2);
@@ -90,7 +82,7 @@ for (var i = 0; i < ListeEleveTotalXLSX.length; i++) {
         }
       }
     }
-    console.log(`[+] ${InfoFacturation.Total}€ à facturer sur ${InfoFacturation.NbEleve} élèves`.green)
+    console.log(`[+] ${InfoFacturation.Total}€ à facturer sur ${ListeEleveTotal.length} élèves`.green)
     var Table = new asciiTable(`${InfoFacturation.Periode} (${InfoFacturation.Classe})`)
     Table.setHeading('Nom', 'Prénom', 'Total')
     for (var j = 0; j < ListeEleveTotal.length; j++) {
@@ -196,13 +188,7 @@ process.stdin.on('keypress', function (ch, key) {
       ]
     }
     if (ListeEleveTotal[i].Email1 != "") {
-      transporter.sendMail(MailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(`[+] Facture de ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} envoyée à ${MailOptions.to}`.green);
-        }
-      })
+      console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} [OK]`.blue)
     }
   }
   console.log("")
