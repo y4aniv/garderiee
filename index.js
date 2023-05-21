@@ -209,8 +209,8 @@ function sendEmail(i) {
   var MailOptions = {
     from: `${config.nodemailer.sender} <${config.nodemailer.auth.user}>`,
     to: [
-      undefined,
-      "yanivdouieb2008@gmail.com"
+      ListeEleveTotal[i].Email1,
+      ListeEleveTotal[i].Email2
     ],
     subject: `Facture de garderie des mois de ${InfoFacturation.Periode}`,
     text: MAIL_CONTENT,
