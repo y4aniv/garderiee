@@ -10,7 +10,9 @@
     "ascii-table": "^0.0.9",
     "colors": "^1.4.0",
     "fs": "^0.0.1-security",
+    "keypress": "^0.2.1",
     "node-xlsx": "^0.21.2",
+    "nodemailer": "^6.9.2",
     "pdf-creator-node": "^2.3.5"
   }
 }
