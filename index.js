@@ -5,6 +5,18 @@ var pdf = require("pdf-creator-node")
 var keypress = require('keypress');
 var nodemailer = require('nodemailer');
 
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: '',
+    pass: ''
+  },
+  pool: true,
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true
+})
+
 keypress(process.stdin);
 
 var args = process.argv.slice(2);
@@ -171,26 +183,45 @@ console.log("[!] Appuyez sur la touche 'Entrée' pour envoyer les factures par e
 
 process.stdin.on('keypress', function (ch, key) {
   process.stdin.pause();
-  console.log(`[+] Envoie de ${ListeEleveTotal.length} factures par email en cours...`.green)
-  console.log("")
-  for (var i = 0; i < ListeEleveTotal.length; i++) {
-    var MailOptions = {
-      from: 'Le Petit d\'Homme',
-      to: `yanivdouieb2008@gmail.com`,
-      subject: `Facture de garderie des mois de ${InfoFacturation.Periode}`,
-      text: `Bonjour Madame, Monsieur,\n\nVeuillez trouver ci-joint la facture de garderie des mois de ${InfoFacturation.Periode}.\n\nCordialement,\n\nLe Petit d'Homme`,
-      attachments: [
-        {
-          filename: `${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
-          path: `./factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
-          contentType: 'application/pdf'
-        }
-      ]
-    }
-    if (ListeEleveTotal[i].Email1 != "") {
-      console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} [OK]`.blue)
-    }
-  }
-  console.log("")
-  console.log("Envoie terminé !".green)
+  sendEmails()
 });
+
+function sendEmails(){
+  for (var i = 0; i < ListeEleveTotal.length; i++) {
+    sendEmail(i)
+  }
+}
+var I = 0
+function sendEmail(i) {
+  var MailOptions = {
+    from: 'Le Petit d\'Homme <lepetitdhomme@orange.fr>',
+    to: [
+      undefined,
+      "yanivdouieb2008@gmail.com"
+    ],
+    subject: `Facture de garderie des mois de ${InfoFacturation.Periode}`,
+    text: `Bonjour Madame, Monsieur,\n\nVeuillez trouver ci-joint la facture de garderie des mois de ${InfoFacturation.Periode}.\n\nCordialement,\n\nLe Petit d'Homme`,
+    attachments: [
+      {
+        filename: `${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
+        path: `./factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
+        contentType: 'application/pdf'
+      }
+    ]
+  }
+  transporter.sendMail(MailOptions, function (error, info) {
+    if(!error){
+      console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue+`[OK]`.green)
+    }else{
+      console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue+`[ERREUR]`.red)
+    }
+    if(I == ListeEleveTotal.length-1){
+      console.log("")
+      console.log("[+] Toutes les factures ont été envoyées".green)
+      console.log("")
+      process.exit()
+    }else{
+      I++
+    }
+  })
+}
