@@ -1,3 +1,1 @@
-Bonjour,
-
-vous trouverez ci-joint la fature pour votr enefant {{PRENOM}} {{NOM}} pour la péride {{PERIODE}}
+ICI LE MAIL
