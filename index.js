@@ -4,15 +4,17 @@ var asciiTable = require('ascii-table');
 var pdf = require("pdf-creator-node")
 var keypress = require('keypress');
 var nodemailer = require('nodemailer');
+var config = require("./lib/configuration/config.json")
+var fs = require("fs")
 
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
   auth: {
-    
+    user: config.nodemailer.auth.user,
+    pass: config.nodemailer.auth.pass
   },
   pool: true,
-  host: 'smtp.gmail.com',
-  port: 465,
+  host: config.nodemailer.host,
+  port: config.nodemailer.port,
   secure: true
 })
 
@@ -126,9 +128,6 @@ for (var i = 0; i < ListeEleveTotal.length; i++) {
         <br>
         <br>
         <p>${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom}&nbsp;&nbsp;&nbsp;(${InfoFacturation.Classe})</p>
-        <br>
-        <br>
-        <br>
         <p>Facture de garderie des mois de ${InfoFacturation.Periode}</p>
         <br>
         <br>
@@ -192,6 +191,21 @@ function sendEmails(){
 }
 var I = 0
 function sendEmail(i) {
+  var MAIL_CONTENT = fs.readFileSync(`./lib/configuration/mail.txt`, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    return data
+  })
+
+  MAIL_CONTENT = MAIL_CONTENT.replace(/{{PERIODE}}/g, InfoFacturation.Periode)
+  MAIL_CONTENT = MAIL_CONTENT.replace(/{{CLASSE}}/g, InfoFacturation.Classe)
+  MAIL_CONTENT = MAIL_CONTENT.replace(/{{TAUX_HORAIRE}}/g, `${InfoFacturation.TauxHoraire}€/15mn`)
+  MAIL_CONTENT = MAIL_CONTENT.replace(/{{TOTAL}}/g, InfoFacturation.Total)
+  MAIL_CONTENT = MAIL_CONTENT.replace(/{{NOM}}/g, ListeEleveTotal[i].Nom)
+  MAIL_CONTENT = MAIL_CONTENT.replace(/{{PRENOM}}/g, ListeEleveTotal[i].Prenom)
+
   var MailOptions = {
     from: 'Le Petit d\'Homme <lepetitdhomme@orange.fr>',
     to: [
@@ -199,7 +213,7 @@ function sendEmail(i) {
       "yanivdouieb2008@gmail.com"
     ],
     subject: `Facture de garderie des mois de ${InfoFacturation.Periode}`,
-    text: `Bonjour Madame, Monsieur,\n\nVeuillez trouver ci-joint la facture de garderie des mois de ${InfoFacturation.Periode}.\n\nCordialement,\n\nLe Petit d'Homme`,
+    text: MAIL_CONTENT,
     attachments: [
       {
         filename: `${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
@@ -216,7 +230,7 @@ function sendEmail(i) {
     }
     if(I == ListeEleveTotal.length-1){
       console.log("")
-      console.log("[+] Toutes les factures ont été envoyées".green)
+      console.log("[+] Toutes les factures ont été envoyées par email".green)
       console.log("")
       process.exit()
     }else{
