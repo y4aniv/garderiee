@@ -30,6 +30,7 @@ La section `nodemailer` contient les paramètres de configuration pour l'envoi d
 -   `host`: Il s'agit de l'hôte du serveur SMTP utilisé pour envoyer les courriers électroniques. Vous devez spécifier l'adresse de l'hôte SMTP fournie par votre fournisseur de messagerie ou votre service d'envoi de courrier électronique. _(ex: smtp.orange.fr)_
 -   `port`: Il s'agit du port utilisé pour la connexion au serveur SMTP. Vous devez spécifier le numéro de port approprié fourni par votre fournisseur de messagerie ou votre service d'envoi de courrier électronique. _(ex: 465)_
 -   `secure`: Il s'agit d'un paramètre booléen qui indique si la connexion avec le serveur SMTP doit être sécurisée ou non. Si la valeur est définie sur "true", une connexion sécurisée sera établie.
+-   `sender`: Il s'agit du nom qui apparaitra lors de la réception du mail par les parents. _(ex: Le Petit d'Homme)_
 -   `auth`: Cette section contient les informations d'authentification requises pour se connecter au serveur SMTP. Vous devez spécifier le nom d'utilisateur et le mot de passe associés à votre compte de messagerie.
 
 Vous devez modifier les valeurs vides (`""`) pour les clés `host`, `port`, `user` et `pass` avec les informations appropriées pour votre configuration de messagerie.

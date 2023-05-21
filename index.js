@@ -207,7 +207,7 @@ function sendEmail(i) {
   MAIL_CONTENT = MAIL_CONTENT.replace(/{{PRENOM}}/g, ListeEleveTotal[i].Prenom)
 
   var MailOptions = {
-    from: 'Le Petit d\'Homme <lepetitdhomme@orange.fr>',
+    from: `${config.nodemailer.sender} <${config.nodemailer.auth.user}>`,
     to: [
       undefined,
       "yanivdouieb2008@gmail.com"

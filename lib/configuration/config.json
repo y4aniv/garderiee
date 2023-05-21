@@ -4,9 +4,10 @@
         "port": 465,
         "secure": true,
         "auth": {
-            "user": "",
-            "pass": ""
-        }
+            "user": "remidev.web.fr@gmail.com",
+            "pass": "unyvnskcvhokvhvw"
+        },
+        "sender": "Le Petit d'Homme"
     },
     "factures": {
         "min": 10
