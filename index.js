@@ -40,7 +40,7 @@ console.log(`> 6/8 rue des Bluets 75011`.blue)
 console.log("")
 
 console.log(`[+] Récupération de la liste d'élèves inscrits à la garderie`.green)
-var ListeInscriptionGarderieXLSX = xlsx.parse(`${__dirname}/liv/data/${options.ListeInscriptionGarderieXLSX_Path}`)[0].data
+var ListeInscriptionGarderieXLSX = xlsx.parse(`${__dirname}/lib/data/${options.ListeInscriptionGarderieXLSX_Path}`)[0].data
 var ListeInscriptionGarderie = []
 
 for (var i = 1; i < ListeInscriptionGarderieXLSX.length; i++) {
