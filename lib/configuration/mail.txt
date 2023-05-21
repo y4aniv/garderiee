@@ -1,8 +1,3 @@
 Bonjour,
 
-Veuillez trouvez ci-joint, la facture de la garderie du mois de {{PERIODE}} de votre enfant {{PRENOM}} {{NOM}} ({{CLASSE}}). 
-
-Le taux horaire est de {{TAUX_HORAIRE}}
-
-Cordialement,
-Le Petit d'Homme
+vous trouverez ci-joint la fature pour votr enefant {{PRENOM}} {{NOM}} pour la péride {{PERIODE}}

@@ -202,7 +202,7 @@ function sendEmail(i) {
   MAIL_CONTENT = MAIL_CONTENT.replace(/{{PERIODE}}/g, InfoFacturation.Periode)
   MAIL_CONTENT = MAIL_CONTENT.replace(/{{CLASSE}}/g, InfoFacturation.Classe)
   MAIL_CONTENT = MAIL_CONTENT.replace(/{{TAUX_HORAIRE}}/g, `${InfoFacturation.TauxHoraire}€/15mn`)
-  MAIL_CONTENT = MAIL_CONTENT.replace(/{{TOTAL}}/g, InfoFacturation.Total)
+  MAIL_CONTENT = MAIL_CONTENT.replace(/{{TOTAL}}/g, `${ListeEleveTotal[i].Total}€`)
   MAIL_CONTENT = MAIL_CONTENT.replace(/{{NOM}}/g, ListeEleveTotal[i].Nom)
   MAIL_CONTENT = MAIL_CONTENT.replace(/{{PRENOM}}/g, ListeEleveTotal[i].Prenom)
 
@@ -222,7 +222,7 @@ function sendEmail(i) {
       }
     ]
   }
-  if(ListeEleveTotal[i].Total >= config.factures.min){
+  if (ListeEleveTotal[i].Total >= config.factures.min) {
     transporter.sendMail(MailOptions, function (error, info) {
       if (!error) {
         console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue + `[OK]`.green)
@@ -238,7 +238,7 @@ function sendEmail(i) {
         I++
       }
     })
-  }else{
+  } else {
     console.log(`> ${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom} <${ListeEleveTotal[i].Email1}> <${ListeEleveTotal[i].Email2}>`.blue + `[<${config.factures.min}€]`.red)
     if (I == ListeEleveTotal.length - 1) {
       console.log("")
