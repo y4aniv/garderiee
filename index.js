@@ -8,8 +8,7 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: '',
-    pass: ''
+    
   },
   pool: true,
   host: 'smtp.gmail.com',
@@ -41,7 +40,7 @@ console.log(`> 6/8 rue des Bluets 75011`.blue)
 console.log("")
 
 console.log(`[+] Récupération de la liste d'élèves inscrits à la garderie`.green)
-var ListeInscriptionGarderieXLSX = xlsx.parse(`${__dirname}/data/${options.ListeInscriptionGarderieXLSX_Path}`)[0].data
+var ListeInscriptionGarderieXLSX = xlsx.parse(`${__dirname}/liv/data/${options.ListeInscriptionGarderieXLSX_Path}`)[0].data
 var ListeInscriptionGarderie = []
 
 for (var i = 1; i < ListeInscriptionGarderieXLSX.length; i++) {
@@ -60,7 +59,7 @@ console.log(`[+] ${ListeInscriptionGarderie.length} élèves inscrits à la gard
 console.log("")
 
 console.log("[+] Récupération des informations de facturation".green)
-var ListeEleveTotalXLSX = xlsx.parse(`${__dirname}/data/${options.ListeEleveTotalXLSX_Path}`)
+var ListeEleveTotalXLSX = xlsx.parse(`${__dirname}/lib/data/${options.ListeEleveTotalXLSX_Path}`)
 var ListeEleveTotal = []
 var InfoFacturation = {}
 for (var i = 0; i < ListeEleveTotalXLSX.length; i++) {
@@ -154,12 +153,12 @@ for (var i = 0; i < ListeEleveTotal.length; i++) {
   var document = {
     html: HTML,
     data: {},
-    path: `./factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
+    path: `./lib/factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
     type: "",
   }
   pdf.create(document, options)
   if (i == ListeEleveTotal.length - 1) {
-    console.log(`[+] ${ListeEleveTotal.length} factures générées dans ${__dirname}/factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/`.green)
+    console.log(`[+] ${ListeEleveTotal.length} factures générées dans ${__dirname}/lib/factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/`.green)
   }
 }
 
@@ -204,7 +203,7 @@ function sendEmail(i) {
     attachments: [
       {
         filename: `${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
-        path: `./factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
+        path: `./lib/factures/${InfoFacturation.Periode}_${InfoFacturation.Classe.replace("/", "-")}/${ListeEleveTotal[i].Nom}_${ListeEleveTotal[i].Prenom}.pdf`,
         contentType: 'application/pdf'
       }
     ]
