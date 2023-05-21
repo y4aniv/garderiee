@@ -5,5 +5,12 @@
   "main": "index.js",
   "repository": "https://github.com/y4aniv/garderiee",
   "author": "Yaniv DOUIEB",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ascii-table": "^0.0.9",
+    "colors": "^1.4.0",
+    "fs": "^0.0.1-security",
+    "node-xlsx": "^0.21.2",
+    "pdf-creator-node": "^2.3.5"
+  }
 }
