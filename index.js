@@ -66,7 +66,7 @@ var ListeEleveTotal = []
 var InfoFacturation = {}
 for (var i = 0; i < ListeEleveTotalXLSX.length; i++) {
   if (isNaN(ListeEleveTotalXLSX[i].name)) {
-    InfoFacturation.Periode = ListeEleveTotalXLSX[i].data[1][1]
+    InfoFacturation.Periode = ListeEleveTotalXLSX[i].data[1][1].toLowerCase()
     InfoFacturation.Classe = ListeEleveTotalXLSX[i].data[3][1].replace(/[()]/g, "");
     InfoFacturation.TauxHoraire = ListeEleveTotalXLSX[i].data[5][1]
     InfoFacturation.Total = 0
@@ -82,10 +82,24 @@ for (var i = 0; i < ListeEleveTotalXLSX.length; i++) {
     for (var j = 0; j < ListeEleveTotalXLSX[i].data.length; j++) {
       if (j > 2) {
         if (!isNaN(ListeEleveTotalXLSX[i].data[j][2])) {
-          var EleveInfo = {
-            Nom: ListeEleveTotalXLSX[i].data[j][3].split(",")[0],
-            Prenom: ListeEleveTotalXLSX[i].data[j][3].split(",")[1].replace(" ", ""),
-            Total: ListeEleveTotalXLSX[i].data[j][7],
+          try{
+            if(InfoFacturation.Classe == "Familles"){
+                var EleveInfo = {
+                    Nom: ListeEleveTotalXLSX[i].data[j][3].split(",")[0],
+                    Prenom: ListeEleveTotalXLSX[i].data[j][3].split(",")[1].replace(" ", ""),
+                    Famille: ListeEleveTotalXLSX[i].data[j][3].replace(",", " "),
+                    Total: ListeEleveTotalXLSX[i].data[j][7],
+                }
+              }else{
+                var EleveInfo = {
+                    Nom: ListeEleveTotalXLSX[i].data[j][3].split(",")[0],
+                    Prenom: ListeEleveTotalXLSX[i].data[j][3].split(",")[1].replace(" ", ""),
+                    Famille: ListeEleveTotalXLSX[i].data[j][3].split(",")[0] + " " + ListeEleveTotalXLSX[i].data[j][3].split(",")[1].replace(" ", ""),
+                    Total: ListeEleveTotalXLSX[i].data[j][7],
+                  }
+              }
+          }catch{
+            console.log(`Erreur de récupération de l'élève ${ListeEleveTotalXLSX[i].data[j]}`.red)
           }
           InfoFacturation.Total += ListeEleveTotalXLSX[i].data[j][7]
           if (EleveInfo.Total > 0) {
@@ -127,7 +141,7 @@ for (var i = 0; i < ListeEleveTotal.length; i++) {
         <br>
         <br>
         <br>
-        <p>${ListeEleveTotal[i].Nom} ${ListeEleveTotal[i].Prenom}&nbsp;&nbsp;&nbsp;(${InfoFacturation.Classe})</p>
+        <p>${ListeEleveTotal[i].Famille}&nbsp;&nbsp;&nbsp;(${InfoFacturation.Classe})</p>
         <p>Facture de garderie des mois de ${InfoFacturation.Periode}</p>
         <br>
         <br>
@@ -208,10 +222,7 @@ function sendEmail(i) {
 
   var MailOptions = {
     from: `${config.nodemailer.sender} <${config.nodemailer.auth.user}>`,
-    to: [
-      ListeEleveTotal[i].Email1,
-      ListeEleveTotal[i].Email2
-    ],
+    to: [undefined],
     subject: `Facture de garderie des mois de ${InfoFacturation.Periode}`,
     text: MAIL_CONTENT,
     attachments: [
